@@ -7,6 +7,7 @@
       <v-button @click="bpprt" size="large">体温打卡</v-button>
       <v-button @click="vacc" size="large">疫苗登记</v-button>
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
+      <v-button @click="exit">退出</v-button>
     </div>
 
     <el-dialog title="修改个人信息" :visible.sync="dialogVisibleChange" width="50%">
@@ -33,8 +34,7 @@
           <el-input v-model="addStudent.account" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="学生生日">
-          <!-- <el-input v-model="addStudent.birthday" autocomplete="off"></el-input> -->
-          <el-date-picker v-model="addStudent.birthday" type="date" placeholder="选择日期">
+          <el-date-picker v-model="addStudent.birthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="学生身份证号">
@@ -50,11 +50,14 @@
       </span>
     </el-dialog>
 
+
+
   </div>
 </template>
 
 <script>
 import axios from "axios"
+import { format } from 'date-fns';
 export default {
   name: 'SltAdmin',
   data() {
@@ -74,11 +77,27 @@ export default {
     }
   },
   methods: {
+    exit() {
+      this.$confirm('是否退出?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        localStorage.removeItem("userInfo")
+        this.$router.push("/")
+      }).catch(() => {
+        console.log("已取消")
+      });
+    },
     insert() {
       axios.post("http://localhost:8080/slt/insert", this.addStudent)
         .then(res => {
-          this.$message.success("添加成功")
-          this.dialogVisibleAdd = false
+          if (res.data.code == 0) {
+            this.$message.error("添加失败:" + res.data.msg)
+          } else {
+            this.$message.success("添加成功")
+            this.dialogVisibleAdd = false
+          }
         })
         .catch(err => {
           this.$message.error(err)

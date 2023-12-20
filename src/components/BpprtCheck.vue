@@ -15,8 +15,10 @@
 
 
       <p>选择的体温：{{ selectedTemperature }}</p>
-<br>
-      <v-button type="primary" @click="submit">提交</v-button>
+      <br>
+      <v-button type="primary" @click="submit">提交</v-button>&nbsp;&nbsp;
+      <v-button type="primary" @click="back">返回</v-button>
+
     </div>
   </div>
 </template>
@@ -37,6 +39,9 @@ export default {
     }
   },
   methods: {
+    back(){
+      this.$router.go(-1)
+    },
     submit() {
       console.log(this.selectedTemperature)
       this.$confirm('是否提交?', '提示', {

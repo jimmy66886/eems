@@ -5,6 +5,7 @@ import SltAdmin from "../views/SltAdmin"
 import SeAdmin from "../views/SeAdmin"
 import TeacherView from "../views/TeacherView"
 import StudentView from "../views/StudentView"
+import ClassInfo from "../views/ClassInfo"
 import BpprtCheck from "../components/BpprtCheck"
 import VaccCheck from "../components/VaccCheck"
 Vue.use(VueRouter)
@@ -40,5 +41,9 @@ export default new VueRouter({
             path: '/vacc',
             component: VaccCheck
         },
+        {
+            path: '/cl',
+            component: ClassInfo
+        }
     ],
 })

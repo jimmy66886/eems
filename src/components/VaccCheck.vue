@@ -11,7 +11,8 @@
     </el-select>
     <br>
     <br>
-    <v-button type="primary" @click="submit">提交</v-button>
+    <v-button type="primary" @click="submit">提交</v-button>&nbsp;&nbsp;&nbsp;
+    <v-button type="primary" @click="back">返回</v-button>
 
   </div>
 </template>
@@ -27,6 +28,9 @@ export default {
     }
   },
   methods: {
+    back(){
+      this.$router.go(-1)
+    },
     submit() {
       this.$confirm('是否提交?', '提示', {
         confirmButtonText: '确定',

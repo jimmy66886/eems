@@ -33,6 +33,7 @@ export default {
            */
           // 学校疫情管理员
           if (res.data.data.type == 3) {
+            localStorage.setItem("userInfo",JSON.stringify(res.data.data))
             this.$router.push('/se')
           }
 
@@ -44,11 +45,13 @@ export default {
 
           // 教职员工
           if (res.data.data.type == 1) {
+            localStorage.setItem("userInfo",JSON.stringify(res.data.data))
             this.$router.push('/te')
           }
 
           // 学生
           if (res.data.data.type == 0) {
+            localStorage.setItem("userInfo",JSON.stringify(res.data.data))
             this.$router.push('/stu')
           }
 
@@ -59,6 +62,9 @@ export default {
           this.$message.error(("账号或密码错误"))
         })
     }
+  },
+  mounted(){
+    localStorage.removeItem("userInfo")
   }
 }
 </script>
