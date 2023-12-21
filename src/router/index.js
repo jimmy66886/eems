@@ -8,6 +8,7 @@ import StudentView from "../views/StudentView"
 import ClassInfo from "../views/ClassInfo"
 import BpprtCheck from "../components/BpprtCheck"
 import VaccCheck from "../components/VaccCheck"
+import TeacherInfo from "../views/TeacherInfo"
 Vue.use(VueRouter)
 
 // 创建并暴露一个路由器
@@ -44,6 +45,10 @@ export default new VueRouter({
         {
             path: '/cl',
             component: ClassInfo
+        },
+        {
+            path: '/ti',
+            component: TeacherInfo
         }
     ],
 })

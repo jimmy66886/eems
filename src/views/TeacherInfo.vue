@@ -1,10 +1,10 @@
 <template>
     <div class="app">
-        <h1>班级体温打卡情况</h1>
-        <el-table :data="studentBpprtInfo" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
+        <h1>教师体温打卡情况</h1>
+        <el-table :data="teacherBpprtInfo" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
             <el-table-column prop="name" label="姓名" sortable>
             </el-table-column>
-            <el-table-column prop="account" label="学号" sortable>
+            <el-table-column prop="account" label="工号" sortable>
             </el-table-column>
             <el-table-column prop="bpprt" label="体温打卡情况" sortable>
             </el-table-column>
@@ -18,14 +18,13 @@
 <script>
 
 import axios from 'axios';
-import { el } from 'date-fns/locale';
 import * as echarts from "echarts"
 export default {
-    name: 'ClassInfo',
+    name: 'TeacherInfo',
     data() {
         return {
             userInfo: JSON.parse(localStorage.getItem("userInfo")),
-            studentBpprtInfo: [],
+            teacherBpprtInfo: [],
             checked: 0,
             uncheck: 0,
             health: 0,
@@ -56,7 +55,7 @@ export default {
                         data: [
                             { value: this.checked, name: '已打卡' },
                             { value: this.uncheck, name: '未打卡' },
-                            // { value: this.studentBpprtInfo.length, name: '总人数' },
+                            // { value: this.teacherBpprtInfo.length, name: '总人数' },
                         ],
                         emphasis: {
                             itemStyle: {
@@ -98,7 +97,7 @@ export default {
                             { value: this.health, name: '正常' },
                             { value: this.unhealth, name: '不正常' },
                             { value: this.unkonwn, name: '未知' },
-                            // { value: this.studentBpprtInfo.length, name: '总人数' },
+                            // { value: this.teacherBpprtInfo.length, name: '总人数' },
                         ],
                         // 这里可以改
                         emphasis: {
@@ -121,14 +120,14 @@ export default {
 
         modifyData() {
             console.log("hahah")
-            for (let index = 0; index < this.studentBpprtInfo.length; index++) {
-                if (this.studentBpprtInfo[index].bpprt === '0') {
+            for (let index = 0; index < this.teacherBpprtInfo.length; index++) {
+                if (this.teacherBpprtInfo[index].bpprt === '0') {
                     this.uncheck++
                     this.unkonwn++
-                    this.studentBpprtInfo[index].bpprt = '未打卡'
+                    this.teacherBpprtInfo[index].bpprt = '未打卡'
                 } else {
                     // 判断是否健康36.3-37.2
-                    if (parseFloat(this.studentBpprtInfo[index].bpprt) >= 36.3 && parseFloat(this.studentBpprtInfo[index].bpprt) <= 37.2) {
+                    if (parseFloat(this.teacherBpprtInfo[index].bpprt) >= 36.3 && parseFloat(this.teacherBpprtInfo[index].bpprt) <= 37.2) {
                         this.health++
                     } else {
                         this.unhealth++
@@ -141,9 +140,9 @@ export default {
         }
     },
     created() {
-        axios.get(`http://localhost:8080/te/getBpprtInfo/${this.userInfo.classId}`)
+        axios.get(`http://localhost:8080/se/getTeBpprtInfo`)
             .then(res => {
-                this.studentBpprtInfo = res.data.data
+                this.teacherBpprtInfo = res.data.data
                 this.modifyData()
             })
             .catch(err => {
