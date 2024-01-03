@@ -5,7 +5,7 @@
       <!-- 插入学生数据 -->
       <v-button @click="dialogVisibleAdd = true" size="large">添加学生</v-button>
       <v-button @click="bpprt" size="large">体温打卡</v-button>
-      <v-button @click="vacc" size="large">疫苗登记</v-button>
+      <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
       <v-button @click="exit">退出</v-button>
     </div>

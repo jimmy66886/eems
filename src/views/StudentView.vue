@@ -4,8 +4,9 @@
     <div class="btnBox">
       <!-- 插入学生数据 -->
       <v-button @click="bpprt" size="large">体温打卡</v-button>
-      <v-button @click="vacc" size="large">疫苗登记</v-button>
+      <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
+      <v-button @click="isolationInfo" size="large">查看隔离信息</v-button>
       <v-button @click="exit">退出</v-button>
     </div>
 
@@ -31,6 +32,16 @@
       </span>
     </el-dialog>
 
+    <el-dialog :close-on-click-modal="false" :show-close="false" :close-on-press-escape="false" title="收到这条消息,请立即前往指定地点隔离"
+      :visible.sync="dialogVisibleIsolation" width="50%">
+      <h1>
+        隔离地点:{{ isolation.site }} <br>
+        隔离开始日期:{{ isolation.startDate }} <br>
+        隔离结束日期:{{ isolation.endDate }} <br>
+      </h1>
+      <el-button type="primary" @click="read">已读</el-button>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -41,15 +52,46 @@ export default {
   name: 'StudentView',
   data() {
     return {
-      userInfo: JSON.parse(localStorage.getItem("userInfo")),
+      userInfo: '',
       changeInfo: {
         name: '',
         password: '',
       },
-      dialogVisibleChange: false
+      dialogVisibleChange: false,
+      dialogVisibleIsolation: false,
+      isolation: {
+
+      },
     }
   },
   methods: {
+
+    read() {
+      axios.put(`http://localhost:8080/isolation/read`, this.isolation)
+        .then(res => {
+          this.dialogVisibleIsolation = false
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    },
+
+    isolationInfo() {
+      let isRead = true
+      axios.get(`http://localhost:8080/isolation/getIsolation/${this.userInfo.account}/${isRead}`)
+        .then(res => {
+          if (res.data.data != null) {
+            this.isolation = res.data.data
+            this.dialogVisibleIsolation = true
+          } else {
+            this.$message.info("暂无隔离信息")
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    },
+
     exit() {
       this.$confirm('是否退出?', '提示', {
         confirmButtonText: '确定',
@@ -87,6 +129,22 @@ export default {
           this.$message.error(err)
         })
     },
+  },
+  created() {
+
+    // 先获取用户信息
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
+    let isRead = false
+    axios.get(`http://localhost:8080/isolation/getIsolation/${this.userInfo.account}/${isRead}`)
+      .then(res => {
+        if (res.data.data != null) {
+          this.isolation = res.data.data
+          this.dialogVisibleIsolation = true
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 }
 </script>

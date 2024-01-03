@@ -4,8 +4,9 @@
       <h1><span class="title">{{ userInfo.name }}</span> 你好</h1>
       <div class="btnBox">
         <v-button @click="teacherInfo" size="large">教师管理</v-button>
+        <v-button @click="isolation" size="large">隔离管理</v-button>
         <v-button @click="bpprt" size="large">体温打卡</v-button>
-        <v-button @click="vacc" size="large">疫苗登记</v-button>
+         <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
         <v-button @click="changeFirst" size="large">修改个人信息</v-button>
         <v-button @click="exit">退出</v-button>
       </div>
@@ -41,6 +42,9 @@ export default {
     }
   },
   methods: {
+    isolation(){
+      this.$router.push('/iso')
+    },
     exit() {
       this.$confirm('是否退出?', '提示', {
         confirmButtonText: '确定',

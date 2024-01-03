@@ -5,6 +5,7 @@ import SltAdmin from "../views/SltAdmin"
 import SeAdmin from "../views/SeAdmin"
 import TeacherView from "../views/TeacherView"
 import StudentView from "../views/StudentView"
+import IsolationView from "../views/IsolationView"
 import ClassInfo from "../views/ClassInfo"
 import BpprtCheck from "../components/BpprtCheck"
 import VaccCheck from "../components/VaccCheck"
@@ -49,6 +50,10 @@ export default new VueRouter({
         {
             path: '/ti',
             component: TeacherInfo
+        },
+        {
+            path: '/iso',
+            component: IsolationView
         }
     ],
 })
