@@ -55,6 +55,12 @@ export default {
             this.$router.push('/stu')
           }
 
+          if (res.data.data.type == 4) {
+            localStorage.setItem("userInfo",JSON.stringify(res.data.data))
+            this.$router.push('/admin')
+          }
+
+
           this.$message.success("登录成功")
 
         })

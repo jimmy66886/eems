@@ -4,6 +4,7 @@
     <div class="btnBox">
       <!-- 插入学生数据 -->
       <v-button @click="dialogVisibleAdd = true" size="large">添加学生</v-button>
+      <v-button @click="dialogVisibleAddTeacher = true" size="large">添加老师</v-button>
       <v-button @click="bpprt" size="large">体温打卡</v-button>
       <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
@@ -50,6 +51,24 @@
       </span>
     </el-dialog>
 
+    <el-dialog title="添加老师" :visible.sync="dialogVisibleAddTeacher" width="50%">
+      <el-form :model="addTeacher">
+        <el-form-item label="老师姓名">
+          <el-input v-model="addTeacher.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="老师工号">
+          <el-input v-model="addTeacher.account" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="老师班级id">
+          <el-input v-model="addTeacher.classId" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisibleAddTeacher = false">取 消</el-button>
+        <el-button type="primary" @click="insertTeacher">确 定</el-button>
+      </span>
+    </el-dialog>
+
 
 
   </div>
@@ -63,8 +82,14 @@ export default {
   data() {
     return {
       dialogVisibleAdd: false,
+      dialogVisibleAddTeacher: false,
       dialogVisibleChange: false,
       // 学生密码默认000000
+      addTeacher:{
+        name: '',
+        account: '',
+        classId: '',
+      },
       addStudent: {
         name: '',
         account: '',
@@ -103,6 +128,22 @@ export default {
           this.$message.error(err)
         })
     },
+
+    insertTeacher() {
+      axios.post("http://localhost:8080/slt/insertTeacher", this.addTeacher)
+        .then(res => {
+          if (res.data.code == 0) {
+            this.$message.error("添加失败:" + res.data.msg)
+          } else {
+            this.$message.success("添加成功")
+            this.dialogVisibleAddTeacher = false
+          }
+        })
+        .catch(err => {
+          this.$message.error(err)
+        })
+    },
+
     // 体温打卡
     bpprt() {
       this.$router.push('/bpprt')

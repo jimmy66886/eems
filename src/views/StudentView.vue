@@ -4,11 +4,23 @@
     <div class="btnBox">
       <!-- 插入学生数据 -->
       <v-button @click="bpprt" size="large">体温打卡</v-button>
+      <v-button @click="showMessage" size="large">消息列表</v-button>
       <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
       <v-button @click="isolationInfo" size="large">查看隔离信息</v-button>
       <v-button @click="exit">退出</v-button>
     </div>
+
+    <el-dialog title="消息列表" :visible.sync="dialogVisibleMessage" width="70%">
+      <el-table :data="messageList" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
+        <el-table-column prop="info" label="内容" sortable>
+        </el-table-column>
+        <el-table-column prop="datetime" label="时间" sortable>
+        </el-table-column>
+        <el-table-column prop="author" label="发起人" sortable>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
     <el-dialog title="修改个人信息" :visible.sync="dialogVisibleChange" width="50%">
       <el-form :model="changeInfo">
@@ -57,14 +69,28 @@ export default {
         name: '',
         password: '',
       },
+      dialogVisibleMessage: false,
       dialogVisibleChange: false,
       dialogVisibleIsolation: false,
       isolation: {
 
       },
+      messageList: [],
     }
   },
   methods: {
+
+    showMessage() {
+      // 获取消息列表
+      axios.get(`http://localhost:8080/message/getAll`)
+        .then(res => {
+          this.messageList = res.data.data
+          this.dialogVisibleMessage = true
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    },
 
     read() {
       axios.put(`http://localhost:8080/isolation/read`, this.isolation)
@@ -145,6 +171,7 @@ export default {
       .catch(err => {
         console.error(err);
       })
+
   }
 }
 </script>
