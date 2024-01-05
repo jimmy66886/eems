@@ -3,9 +3,10 @@
     <div class="app">
       <h1><span class="title">{{ userInfo.name }}</span> 你好</h1>
       <div class="btnBox">
-        <v-button @click="teacherInfo" size="large">教师管理</v-button>
+        <!-- <v-button @click="teacherInfo" size="large">教师管理</v-button> -->
         <v-button @click="dialogVisibleMessage = true" size="large">发送疫情信息</v-button>
         <v-button @click="manageMessage" size="large">管理疫情信息</v-button>
+        <v-button @click="allBpprtInfo" size="large">查看体温打卡情况</v-button>
 
         <v-button @click="isolation" size="large">隔离管理</v-button>
         <v-button @click="bpprt" size="large">体温打卡</v-button>
@@ -141,6 +142,11 @@ export default {
         console.log("已取消")
       });
     },
+
+    allBpprtInfo(){
+      this.$router.push('/allBpprt')
+    },
+
     teacherInfo() {
       this.$router.push('/ti')
     },

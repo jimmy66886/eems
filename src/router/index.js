@@ -11,6 +11,7 @@ import BpprtCheck from "../components/BpprtCheck"
 import VaccCheck from "../components/VaccCheck"
 import TeacherInfo from "../views/TeacherInfo"
 import SystemManager from "../views/SystemManager"
+import AllBpprt from "../views/AllBpprt"
 Vue.use(VueRouter)
 
 // 创建并暴露一个路由器
@@ -59,6 +60,10 @@ export default new VueRouter({
         {
             path: '/admin',
             component: SystemManager
+        },
+        {
+            path: '/allBpprt',
+            component: AllBpprt
         }
     ],
 })

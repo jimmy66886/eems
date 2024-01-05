@@ -8,8 +8,19 @@
       <v-button @click="bpprt" size="large">体温打卡</v-button>
       <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
       <v-button @click="changeFirst" size="large">修改个人信息</v-button>
+      <!-- excel上传 -->
+      <v-button @click="batchAdd" size="large">批量上传学生信息</v-button>
       <v-button @click="exit">退出</v-button>
     </div>
+
+    <el-dialog title="批量上传学生信息" :visible.sync="dialogVisibleUpload" width="50%">
+      <el-form>
+        <el-form-item label="选择excel上传">
+          <input type="file" @change="handleFileChange" />
+          <button @click="uploadFile">上传excel表格</button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <el-dialog title="修改个人信息" :visible.sync="dialogVisibleChange" width="50%">
       <el-form :model="changeInfo">
@@ -84,8 +95,10 @@ export default {
       dialogVisibleAdd: false,
       dialogVisibleAddTeacher: false,
       dialogVisibleChange: false,
+      dialogVisibleUpload: false,
+      
       // 学生密码默认000000
-      addTeacher:{
+      addTeacher: {
         name: '',
         account: '',
         classId: '',
@@ -102,6 +115,40 @@ export default {
     }
   },
   methods: {
+    batchAdd(){
+      this.dialogVisibleUpload = true
+    },
+
+    handleFileChange(event) {
+
+      console.log("测试")
+      this.selectedFile = event.target.files[0];
+    },
+    uploadFile() {
+      console.log("测试")
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      // 使用 Axios 发送文件
+      axios.post('http://localhost:8080/upload/excel', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          console.log(response.data);
+          if (response.data.code == 0) {
+            this.$message.error(response.data.msg)
+          }
+          this.$message.success("上传成功")
+          // 处理上传成功的逻辑
+        })
+        .catch(error => {
+          console.error('上传失败', error);
+          // 处理上传失败的逻辑
+        });
+    },
+
     exit() {
       this.$confirm('是否退出?', '提示', {
         confirmButtonText: '确定',
