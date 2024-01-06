@@ -1,18 +1,75 @@
 <template>
   <div>
     <div class="app">
-      <h1><span class="title">{{ userInfo.name }}</span> 你好</h1>
+      <h1>疫情管理员: <span class="title">{{ userInfo.name }}</span> </h1>
       <div class="btnBox">
-        <!-- <v-button @click="teacherInfo" size="large">教师管理</v-button> -->
-        <v-button @click="dialogVisibleMessage = true" size="large">发送疫情信息</v-button>
-        <v-button @click="manageMessage" size="large">管理疫情信息</v-button>
-        <v-button @click="allBpprtInfo" size="large">查看体温打卡情况</v-button>
 
-        <v-button @click="isolation" size="large">隔离管理</v-button>
-        <v-button @click="bpprt" size="large">体温打卡</v-button>
+        <el-tabs type="border-card">
+          <el-tab-pane label="疫情信息管理">
+            <div class="childBtnBox">
+              <div>
+                <img class="bpprtImg" @click="dialogVisibleMessage = true" src="../assets/send-fill.png">
+                <h3>发送疫情信息</h3>
+              </div>
+              <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
+              <div>
+                <img class="bpprtImg" @click="manageMessage" src="../assets/消息.png">
+                <h3>查看疫情信息列表</h3>
+              </div>
+
+              <!-- <v-button size="large" @click="exit">退出</v-button> -->
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="隔离信息">
+            <div class="childBtnBox">
+              <div>
+                <img class="bpprtImg" @click="isolation" src="../assets/隔离.png">
+                <h3>隔离管理</h3>
+              </div>
+            </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="体温管理">
+            <div class="childBtnBox">
+              <div>
+                <img class="bpprtImg" @click="bpprt" src="../assets/bpprtCheckImg.png">
+                <h3>体温打卡</h3>
+                <!-- <v-button @click="bpprt" size="large">体温打卡</v-button> -->
+
+              </div>
+              <div>
+                <img class="bpprtImg" @click="allBpprtInfo" src="../assets/体温单.png">
+                <h3>查看体温打卡情况</h3>
+              </div>
+            </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="系统管理">
+            <div class="childBtnBox">
+              <div>
+                <img class="bpprtImg" @click="changeFirst" src="../assets/edit.png">
+                <h3>修改个人信息</h3>
+              </div>
+              <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
+              <div>
+                <img class="bpprtImg" @click="exit" src="../assets/退出.png">
+                <h3>退出</h3>
+              </div>
+              <!-- <v-button size="large" @click="exit">退出</v-button> -->
+            </div>
+          </el-tab-pane>
+
+        </el-tabs>
+
+        <!-- <v-button @click="teacherInfo" size="large">教师管理</v-button> -->
+        <!-- <v-button @click="dialogVisibleMessage = true" size="large">发送疫情信息</v-button> -->
+        <!-- <v-button @click="manageMessage" size="large">管理疫情信息</v-button> -->
+        <!-- <v-button @click="allBpprtInfo" size="large">查看体温打卡情况</v-button> -->
+
+        <!-- <v-button @click="isolation" size="large">隔离管理</v-button> -->
         <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
-        <v-button @click="changeFirst" size="large">修改个人信息</v-button>
-        <v-button @click="exit">退出</v-button>
+        <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button>
+        <v-button @click="exit">退出</v-button> -->
       </div>
 
       <el-dialog title="修改个人信息" :visible.sync="dialogVisibleChange" width="50%">
@@ -143,7 +200,7 @@ export default {
       });
     },
 
-    allBpprtInfo(){
+    allBpprtInfo() {
       this.$router.push('/allBpprt')
     },
 
@@ -197,10 +254,7 @@ export default {
 .btnBox {
   padding-top: 40px;
   margin: 0 auto;
-  width: 400px;
+  width: 500px;
   height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 </style>

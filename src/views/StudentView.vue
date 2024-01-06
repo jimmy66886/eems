@@ -1,14 +1,45 @@
 <template>
   <div class="app">
-    <h1><span class="title">{{ userInfo.name }}</span> 你好</h1>
+    <h1>学生<span class="title"> {{ userInfo.name }}</span>  </h1>
     <div class="btnBox">
-      <!-- 插入学生数据 -->
-      <v-button @click="bpprt" size="large">体温打卡</v-button>
-      <v-button @click="showMessage" size="large">消息列表</v-button>
-      <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
-      <v-button @click="changeFirst" size="large">修改个人信息</v-button>
-      <v-button @click="isolationInfo" size="large">查看隔离信息</v-button>
-      <v-button @click="exit">退出</v-button>
+      <el-tabs type="border-card">
+        <el-tab-pane label="疫情信息">
+          <!-- 插入学生数据 -->
+          <div class="childBtnBox">
+            <!-- <v-button @click="bpprt" size="large">体温打卡</v-button> -->
+            <div>
+              <img class="bpprtImg" alt="体温打卡" @click="bpprt" src="../assets/bpprtCheckImg.png">
+              <h3>体温打卡</h3>
+            </div>
+            <div>
+              <img class="bpprtImg" alt="消息" @click="showMessage" src="../assets/消息.png">
+              <h3>消息中心</h3>
+            </div>
+            <div>
+              <img class="bpprtImg" alt="隔离" @click="isolationInfo" src="../assets/隔离.png">
+              <h3>隔离信息</h3>
+            </div>
+
+            <!-- <v-button @click="showMessage" size="large">消息列表</v-button> -->
+            <!-- <v-button @click="isolationInfo" size="large">查看隔离信息</v-button> -->
+          </div>
+          <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
+        </el-tab-pane>
+        <el-tab-pane label="系统管理">
+          <div class="childBtnBox">
+            <div>
+              <img class="bpprtImg" @click="changeFirst" src="../assets/edit.png">
+              <h3>修改个人信息</h3>
+            </div>
+            <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
+            <div>
+              <img class="bpprtImg" @click="exit" src="../assets/退出.png">
+              <h3>退出</h3>
+            </div>
+            <!-- <v-button size="large" @click="exit">退出</v-button> -->
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
 
     <el-dialog title="消息列表" :visible.sync="dialogVisibleMessage" width="70%">
@@ -192,10 +223,28 @@ export default {
 .btnBox {
   padding-top: 40px;
   margin: 0 auto;
-  width: 400px;
+  width: 600px;
+  height: 300px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around; */
+}
+
+.childBtnBox {
   height: 300px;
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
+  overflow: hidden;
+}
+
+.bpprtImg {
+  width: 50px;
+  height: 50px;
+  transition: width 0.5s, height 0.5s;
+}
+
+.bpprtImg:hover {
+  width: 60px;
+  height: 60px;
 }
 </style>

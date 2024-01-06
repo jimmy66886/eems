@@ -1,16 +1,65 @@
 <template>
   <div class="app">
-    <h1><span class="title">{{ userInfo.name }}</span> 你好</h1>
+    <h1>二级单位管理员: <span class="title">{{ userInfo.name }}</span> </h1>
     <div class="btnBox">
+
+
+      <el-tabs type="border-card">
+        <el-tab-pane label="人员管理">
+          <div class="childBtnBox">
+            <div>
+              <img class="bpprtImg" @click="dialogVisibleAdd = true" src="../assets/添加疫情.png">
+              <h3>添加学生</h3>
+            </div>
+            <div>
+              <img class="bpprtImg" alt="消息" @click="dialogVisibleAddTeacher = true" src="../assets/添加二级.png">
+              <h3>添加老师</h3>
+            </div>
+            <div>
+              <img class="bpprtImg" alt="消息" @click="batchAdd" src="../assets/excel.png">
+              <h3>批量添加学生</h3>
+            </div>
+          </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="疫情信息">
+          <!-- 插入学生数据 -->
+          <div class="childBtnBox">
+            <!-- <v-button @click="bpprt" size="large">体温打卡</v-button> -->
+            <div>
+              <img class="bpprtImg" alt="体温打卡" @click="bpprt" src="../assets/bpprtCheckImg.png">
+              <h3>体温打卡</h3>
+            </div>
+          </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="系统管理">
+          <div class="childBtnBox">
+            <div>
+              <img class="bpprtImg" @click="changeFirst" src="../assets/edit.png">
+              <h3>修改个人信息</h3>
+            </div>
+            <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
+            <div>
+              <img class="bpprtImg" @click="exit" src="../assets/退出.png">
+              <h3>退出</h3>
+            </div>
+            <!-- <v-button size="large" @click="exit">退出</v-button> -->
+          </div>
+        </el-tab-pane>
+
+      </el-tabs>
+
+
       <!-- 插入学生数据 -->
-      <v-button @click="dialogVisibleAdd = true" size="large">添加学生</v-button>
-      <v-button @click="dialogVisibleAddTeacher = true" size="large">添加老师</v-button>
-      <v-button @click="bpprt" size="large">体温打卡</v-button>
+      <!-- <v-button @click="dialogVisibleAdd = true" size="large">添加学生</v-button>
+      <v-button @click="dialogVisibleAddTeacher = true" size="large">添加老师</v-button> -->
+      <!-- <v-button @click="bpprt" size="large">体温打卡</v-button> -->
       <!-- <v-button @click="vacc" size="large">疫苗登记</v-button> -->
-      <v-button @click="changeFirst" size="large">修改个人信息</v-button>
+      <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
       <!-- excel上传 -->
-      <v-button @click="batchAdd" size="large">批量上传学生信息</v-button>
-      <v-button @click="exit">退出</v-button>
+      <!-- <v-button @click="batchAdd" size="large">批量上传学生信息</v-button> -->
+      <!-- <v-button @click="exit">退出</v-button> -->
     </div>
 
     <el-dialog title="批量上传学生信息" :visible.sync="dialogVisibleUpload" width="50%">
@@ -45,12 +94,13 @@
         <el-form-item label="学生学号">
           <el-input v-model="addStudent.account" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="学生生日">
-          <el-date-picker v-model="addStudent.birthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
-          </el-date-picker>
-        </el-form-item>
         <el-form-item label="学生身份证号">
           <el-input v-model="addStudent.ic" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="学生生日">
+          <!-- <el-date-picker v-model="addStudent.birthday" type="date" placeholder="选择日期" value-format="yyyy-MM-dd">
+          </el-date-picker> -->
+          <el-input v-model="comBirthday" disabled autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="学生班级id">
           <el-input v-model="addStudent.classId" autocomplete="off"></el-input>
@@ -96,7 +146,7 @@ export default {
       dialogVisibleAddTeacher: false,
       dialogVisibleChange: false,
       dialogVisibleUpload: false,
-      
+
       // 学生密码默认000000
       addTeacher: {
         name: '',
@@ -115,7 +165,13 @@ export default {
     }
   },
   methods: {
-    batchAdd(){
+    extractBirthday(idCardNumber) {
+      const birthdayString = idCardNumber.substring(6, 14);
+      const formattedBirthday = `${birthdayString.substring(0, 4)}-${birthdayString.substring(4, 6)}-${birthdayString.substring(6, 8)}`;
+      return formattedBirthday;
+    },
+
+    batchAdd() {
       this.dialogVisibleUpload = true
     },
 
@@ -140,6 +196,7 @@ export default {
           if (response.data.code == 0) {
             this.$message.error(response.data.msg)
           }
+          this.dialogVisibleUpload = false
           this.$message.success("上传成功")
           // 处理上传成功的逻辑
         })
@@ -162,6 +219,9 @@ export default {
       });
     },
     insert() {
+
+      this.addStudent.birthday = this.comBirthday
+
       axios.post("http://localhost:8080/slt/insert", this.addStudent)
         .then(res => {
           if (res.data.code == 0) {
@@ -218,7 +278,13 @@ export default {
   },
   mounted() {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
-  }
+  },
+  computed: {
+    comBirthday() {
+      // 计算整数和小数的组合，形成体温值
+      return this.extractBirthday(this.addStudent.ic);
+    },
+  },
 }
 </script>
 
@@ -238,10 +304,7 @@ export default {
 .btnBox {
   padding-top: 40px;
   margin: 0 auto;
-  width: 400px;
+  width: 500px;
   height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 </style>

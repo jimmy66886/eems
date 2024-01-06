@@ -22,9 +22,13 @@
         </el-dialog>
 
         <div class="title">
+            <v-button @click="back" type="primary">返回</v-button>
+
             <h1>新增隔离</h1>
+
             <el-button type="success" icon="el-icon-d-arrow-right
 " @click="showIsolation">查看已隔离人员</el-button>
+
         </div>
         <div class="searchBox">
             <el-input v-model="isolation.account" placeholder="请输入学号"></el-input><el-button type="primary"
@@ -35,6 +39,9 @@
             <el-input disabled v-model="isolation.name"></el-input><el-button type="danger" icon="el-icon-search"
                 @click="dialogVisible = true">隔离</el-button>
         </div>
+
+
+
 
         <el-dialog title="隔离学生" :visible.sync="dialogVisible" width="50%">
             <el-form :model="isolation">
@@ -87,6 +94,10 @@ export default {
         }
     },
     methods: {
+
+        back() {
+            this.$router.go(-1)
+        },
 
         // 根据id删除隔离记录
         handleDelete(index, row) {

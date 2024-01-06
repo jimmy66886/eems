@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <h1 class="title">所有人员体温打卡情况</h1>
+    <v-button @click="back" type="primary">返回</v-button>
     <h1>已打卡:{{ checked }} &nbsp; 未打卡:{{ uncheck }}</h1>
     <el-table :data="allBpprtInfo" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
       <el-table-column prop="name" label="姓名" sortable>
@@ -29,7 +30,9 @@ export default {
     }
   },
   methods: {
-
+    back() {
+      this.$router.go(-1)
+    },
   },
   created() {
     axios.get("http://localhost:8080/se/getAllBpprtInfo")
