@@ -11,6 +11,8 @@
             </el-table-column>
         </el-table>
         <br>
+        <hr>
+        <br>
         <div class="echart" id="mychart" :style="{ float: 'left', width: '50%', height: '400px' }"></div>
         <div class="echart" id="mychart1" :style="{ float: 'right', width: '50%', height: '400px' }"></div>
     </div>
