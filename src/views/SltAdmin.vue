@@ -16,6 +16,10 @@
               <h3>添加老师</h3>
             </div>
             <div>
+              <img class="bpprtImg" alt="消息" @click="batchAddTeacher" src="../assets/excelT.png">
+              <h3>批量添加老师</h3>
+            </div>
+            <div>
               <img class="bpprtImg" alt="消息" @click="batchAdd" src="../assets/excel.png">
               <h3>批量添加学生</h3>
             </div>
@@ -65,8 +69,19 @@
     <el-dialog title="批量上传学生信息" :visible.sync="dialogVisibleUpload" width="50%">
       <el-form>
         <el-form-item label="选择excel上传">
+          <v-button @click="downloadStudentTemplate">下载模板</v-button>
           <input type="file" @change="handleFileChange" />
           <button @click="uploadFile">上传excel表格</button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog title="批量上传老师信息" :visible.sync="dialogVisibleUploadTeacher" width="50%">
+      <el-form>
+        <el-form-item label="选择excel上传">
+          <v-button @click="downloadTeacherTemplate">下载模板</v-button>
+          <input type="file" @change="handleFileChange" />
+          <button @click="uploadTeacherFile">上传excel表格</button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -146,6 +161,7 @@ export default {
       dialogVisibleAddTeacher: false,
       dialogVisibleChange: false,
       dialogVisibleUpload: false,
+      dialogVisibleUploadTeacher: false,
 
       // 学生密码默认000000
       addTeacher: {
@@ -165,6 +181,16 @@ export default {
     }
   },
   methods: {
+
+    downloadStudentTemplate() {
+      // 下载模板逻辑
+      window.location.href = 'http://localhost:8080/upload/downloadTemplate'; // 假设后端提供了下载模板的接口
+    },
+
+    downloadTeacherTemplate(){
+      window.location.href = 'http://localhost:8080/upload/downloadTemplateTeacher'; // 假设后端提供了下载模板的接口
+    },
+
     extractBirthday(idCardNumber) {
       const birthdayString = idCardNumber.substring(6, 14);
       const formattedBirthday = `${birthdayString.substring(0, 4)}-${birthdayString.substring(4, 6)}-${birthdayString.substring(6, 8)}`;
@@ -174,12 +200,41 @@ export default {
     batchAdd() {
       this.dialogVisibleUpload = true
     },
+    batchAddTeacher() {
+      this.dialogVisibleUploadTeacher = true
+    },
 
     handleFileChange(event) {
 
       console.log("测试")
       this.selectedFile = event.target.files[0];
     },
+
+    uploadTeacherFile() {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      // 使用 Axios 发送文件
+      axios.post('http://localhost:8080/upload/excel/teacher', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          console.log(response.data);
+          if (response.data.code == 0) {
+            this.$message.error(response.data.msg)
+          }
+          this.dialogVisibleUpload = false
+          this.$message.success("上传成功")
+          // 处理上传成功的逻辑
+        })
+        .catch(error => {
+          console.error('上传失败', error);
+          // 处理上传失败的逻辑
+        });
+    },
+
     uploadFile() {
       console.log("测试")
       const formData = new FormData();
