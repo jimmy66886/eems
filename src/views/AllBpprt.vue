@@ -1,9 +1,13 @@
 <template>
   <div class="app">
     <h1 class="title">所有人员体温打卡情况</h1>
-    <v-button @click="back" type="primary">返回</v-button>
-    <el-table :data="pageBpprtInfo" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
-      <el-table-column prop="name" label="姓名" sortable>
+    <div style="text-align: left;">
+      <v-button @click="back" type="primary">返回</v-button>
+    </div>
+    <br>
+    <el-table stripe border :data="pageBpprtInfo" style="width: 100%"
+      :default-sort="{ prop: 'date', order: 'descending' }">
+      <el-table-column olumn prop="name" label="姓名" sortable>
       </el-table-column>
       <el-table-column prop="account" label="学号/工号" sortable>
       </el-table-column>
@@ -14,14 +18,12 @@
     </el-table>
 
     <el-pagination background layout="prev, pager, next,total,sizes,jumper" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" 
-      :page-sizes="[5,10,20]" 
-      :page-size="pageSize" 
+      @current-change="handleCurrentChange" :current-page="page" :page-sizes="[5, 10, 20]" :page-size="pageSize"
       :total="allBpprtInfo.length">
     </el-pagination>
-
+    <br><br>
     <hr>
-
+    <br><br><br>
     <br>
     <div class="echart" id="mychart" :style="{ float: 'left', width: '50%', height: '400px' }"></div>
     <div class="echart" id="mychart1" :style="{ float: 'right', width: '50%', height: '400px' }"></div>
@@ -61,7 +63,7 @@ export default {
     initEcharts() {
       const option = {
         title: {
-          text: '班级打卡饼状图',
+          text: '打卡情况',
           left: 'center'
         },
         tooltip: {
@@ -102,7 +104,7 @@ export default {
     initEcharts1() {
       const option = {
         title: {
-          text: '健康状况饼状图',
+          text: '健康状况',
           left: 'center'
         },
         tooltip: {
@@ -142,13 +144,13 @@ export default {
       });
     },
 
-    handleSizeChange(size){
+    handleSizeChange(size) {
       this.pageSize = size
       this.page = 1
       this.fetchPageData()
     },
 
-    handleCurrentChange(page){
+    handleCurrentChange(page) {
       this.page = page
       this.fetchPageData()
     },

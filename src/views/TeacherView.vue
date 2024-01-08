@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="app">
-      <h1><span class="title">{{ userInfo.name }}</span> </h1>
+      <h1>教师: <span class="title">{{ userInfo.name }}</span> </h1>
       <div class="btnBox">
 
         <el-tabs type="border-card">

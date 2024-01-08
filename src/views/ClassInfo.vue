@@ -1,7 +1,9 @@
 <template>
     <div class="app">
         <h1>班级体温打卡情况</h1>
-        <v-button type="primary" @click="back">返回</v-button>
+        <div style="text-align: left;">
+            <v-button @click="back" type="primary">返回</v-button>
+        </div>
         <el-table :data="studentBpprtInfo" style="width: 100%" :default-sort="{ prop: 'date', order: 'descending' }">
             <el-table-column prop="name" label="姓名" sortable>
             </el-table-column>
@@ -38,7 +40,7 @@ export default {
     },
     methods: {
 
-        back(){
+        back() {
             this.$router.go(-1)
         },
 
