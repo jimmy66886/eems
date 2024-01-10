@@ -148,6 +148,12 @@ export default {
     },
 
     insertSe() {
+
+      if(this.addSe.account==''){
+        this.$message.error("工号不能为空")
+        return
+      }
+
       axios.post("http://localhost:8080/user/insertSe", this.addSe)
         .then(res => {
           if (res.data.code == 0) {

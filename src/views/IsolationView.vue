@@ -159,6 +159,13 @@ export default {
                 })
         },
         isolationThis() {
+
+            // 先进行非空判断
+            if (this.isolation.site == '') {
+                this.$message.error("请输入隔离地点")
+                return
+            }
+
             this.$confirm('是否确定隔离?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',

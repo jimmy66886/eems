@@ -29,7 +29,6 @@
         <el-tab-pane label="疫情信息">
           <!-- 插入学生数据 -->
           <div class="childBtnBox">
-            <!-- <v-button @click="bpprt" size="large">体温打卡</v-button> -->
             <div>
               <img class="bpprtImg" alt="体温打卡" @click="bpprt" src="../assets/bpprtCheckImg.png">
               <h3>体温打卡</h3>
@@ -43,12 +42,10 @@
               <img class="bpprtImg" @click="changeFirst" src="../assets/edit.png">
               <h3>修改个人信息</h3>
             </div>
-            <!-- <v-button @click="changeFirst" size="large">修改个人信息</v-button> -->
             <div>
               <img class="bpprtImg" @click="exit" src="../assets/退出.png">
               <h3>退出</h3>
             </div>
-            <!-- <v-button size="large" @click="exit">退出</v-button> -->
           </div>
         </el-tab-pane>
 
@@ -67,23 +64,19 @@
     </div>
 
     <el-dialog title="批量上传学生信息" :visible.sync="dialogVisibleUpload" width="50%">
-      <el-form>
-        <el-form-item label="选择excel上传">
-          <v-button @click="downloadStudentTemplate">下载模板</v-button>
-          <input type="file" @change="handleFileChange" />
-          <button @click="uploadFile">上传excel表格</button>
-        </el-form-item>
-      </el-form>
+          <div style="display: flex; flex-direction: row; justify-content: space-around;">
+            <v-button @click="downloadStudentTemplate">下载模板</v-button>
+            <input style="text-align: center;" type="file" @change="handleFileChange" />
+            <v-button type="primary" @click="uploadFile">上传excel表格</v-button>
+          </div>
     </el-dialog>
 
     <el-dialog title="批量上传老师信息" :visible.sync="dialogVisibleUploadTeacher" width="50%">
-      <el-form>
-        <el-form-item label="选择excel上传">
-          <v-button @click="downloadTeacherTemplate">下载模板</v-button>
-          <input type="file" @change="handleFileChange" />
-          <button @click="uploadTeacherFile">上传excel表格</button>
-        </el-form-item>
-      </el-form>
+          <div style="display: flex; flex-direction: row; justify-content: space-around;">
+            <v-button @click="downloadTeacherTemplate">下载模板</v-button>
+            <input type="file" @change="handleFileChange" />
+            <v-button type="primary" @click="uploadTeacherFile">上传excel表格</v-button>
+          </div>
     </el-dialog>
 
     <el-dialog title="修改个人信息" :visible.sync="dialogVisibleChange" width="50%">
@@ -187,7 +180,7 @@ export default {
       window.location.href = 'http://localhost:8080/upload/downloadTemplate'; // 假设后端提供了下载模板的接口
     },
 
-    downloadTeacherTemplate(){
+    downloadTeacherTemplate() {
       window.location.href = 'http://localhost:8080/upload/downloadTemplateTeacher'; // 假设后端提供了下载模板的接口
     },
 
@@ -223,7 +216,8 @@ export default {
         .then(response => {
           console.log(response.data);
           if (response.data.code == 0) {
-            this.$message.error(response.data.msg)
+            this.$message.error("报错:"+response.data.msg)
+            return
           }
           this.dialogVisibleUpload = false
           this.$message.success("上传成功")
